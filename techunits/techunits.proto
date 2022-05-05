@@ -1,5 +1,6 @@
 syntax = "proto3";
 package SamplePackage;
+option go_package = "./;SamplePackage";
 
 message Empty {
 }
