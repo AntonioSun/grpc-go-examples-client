@@ -1,0 +1,79 @@
+syntax = "proto3";
+package SamplePackage;
+
+message Empty {
+}
+
+message PingRequest {
+}
+
+message PingResponse {
+    string id = 1;
+    string field_01 = 2;
+    string field_02 = 3;
+    string field_03 = 4;
+    string field_04 = 5;
+    string status = 6;
+    int32 created_on = 7;
+}
+
+message EntryCreateRequest {
+    string title = 1;
+    string code = 2;
+    string description = 3;
+}
+
+message EntryUpdateRequest {
+    string entry_id = 1;
+    string title = 2;
+    string code = 3;
+    string description = 4;
+}
+
+message EntryFileUploadRequest {
+    oneof data {
+        string entry_id = 1;
+        bytes chunk = 2;
+    };
+}
+
+message EntryResponse {
+    string id = 1;
+    string title = 2;
+    string code = 3;
+    string description = 4;
+    string file_url = 5;
+    int32 created_on = 6;
+    int32 modified_on = 7;
+}
+
+message EntryListRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    enum Status {
+        PUBLISHED = 0;
+        DRAFT = 1;
+    }
+    Status status = 3;
+}
+
+message EntryListResponse {
+    repeated EntryResponse entries = 1;
+}
+
+message EntryDetailRequest {
+    string entry_id = 1;
+}
+
+service SampleService {
+    rpc ping(PingRequest) returns (PingResponse) {}
+    rpc createEntry(EntryCreateRequest) returns (EntryResponse) {}
+    rpc createBulkEntries(stream EntryCreateRequest) returns (stream EntryResponse) {}
+    rpc updateEntry(EntryUpdateRequest) returns (EntryResponse) {}
+    rpc uploadEntryFile(stream EntryFileUploadRequest) returns (EntryResponse) {}
+    rpc listEntries(EntryListRequest) returns (EntryListResponse) {}
+    rpc streamEntries(EntryListRequest) returns (stream EntryResponse) {}
+    rpc getEntryInfo(EntryDetailRequest) returns (EntryResponse) {}
+    rpc deleteEntry(EntryDetailRequest) returns (EntryResponse) {}
+    rpc notDefinedSample(Empty) returns (Empty) {}
+}
