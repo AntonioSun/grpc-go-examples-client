@@ -7,7 +7,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"time"
 
@@ -45,5 +47,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Response: %v", r.GetEntries())
+	b, _ := json.Marshal(r.GetEntries())
+	fmt.Printf("%+v\n", string(b))
 }
