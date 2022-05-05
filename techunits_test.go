@@ -61,7 +61,7 @@ func TestEntryListRequest_ListEntries(t *testing.T) {
 	}{
 		{
 			"default",
-			entryList,
+			entryList3,
 			nil,
 		},
 	}
@@ -74,12 +74,12 @@ func TestEntryListRequest_ListEntries(t *testing.T) {
 	defer conn.Close()
 	c := pb.NewSampleServiceClient(conn)
 
-	// Contact the server
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// Contact the server
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+
 			response, err := c.ListEntries(ctx, &pb.EntryListRequest{})
 
 			if err != nil {
